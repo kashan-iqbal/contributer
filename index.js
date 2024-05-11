@@ -6,7 +6,7 @@ const simplegit = require("simple-git")
 const filePath = "./data.json"
 
 
-const DATE = moment().format()
+const DATE = moment().subtract(1,'d').format()
 
 const date ={
     date:DATE
@@ -14,11 +14,11 @@ const date ={
 
 jsonFile.writeFile(filePath,date)
 
-
+console.log(date)
 
 simplegit().add([filePath]).commit(DATE,{'--date':DATE}).push()
 
-let k = `internet`
+
 
 
 
