@@ -1,24 +1,26 @@
-const jsonFile = require("jsonfile")
-const moment = require('moment')
-const simplegit = require("simple-git")
+import moment from "moment";
+import jsonFile from "jsonfile";
+import simpleGit from "simple-git";
 
+const filePath = "./data.json";
 
-const filePath = "./data.json"
+const makeCommit = (n) => {
+  if (n === 0) return simpleGit().push();
 
+  const DATE = moment().format(); // Use current date/time
 
-const DATE = moment().subtract(1,'d').format()
+  const data = {
+    // Add meaningful data here (optional)
+    date: DATE,
+  };
+console.log(data)
+  jsonFile
+    .writeFile(filePath, data)
+    .then(() =>
+      simpleGit()
+        .add([filePath])
+        .commit(DATE, { "--date": DATE }, makeCommit.bind(this, --n))
+    );
+};
 
-const date ={
-    date:DATE
-}
-
-jsonFile.writeFile(filePath,date)
-
-console.log(date)
-
-simplegit().add([filePath]).commit(DATE,{'--date':DATE}).push()
-
-
-
-
-
+makeCommit(100); // Number of commits can be adjusted
