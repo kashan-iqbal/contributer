@@ -23,4 +23,13 @@ console.log(data)
     );
 };
 
-makeCommit(100); // Number of commits can be adjusted
+makeCommit(50); // Number of commits can be adjusted
+
+
+
+
+
+
+
+const inter = `woow` 
+console.log(inter)
