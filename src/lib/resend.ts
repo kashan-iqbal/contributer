@@ -10,17 +10,21 @@ export async function SendVerficationEmail(
   verifyCode: string
 ): Promise<ApiResponce> {
   try {
-    await resendEmail.emails.send({
-      from: "you@example.com",
+    const { data, error } = await resendEmail.emails.send({
+      from: "email@email.kashan.dev",
       to: email,
       subject: "verfication code",
       react: VerificationsEmailProps({ username, opt: verifyCode }),
     });
-
-    return { seucces: true, message: "Messges send SuccessFully" };
+    // console.log("data", data, "error", error)
+    if (data) {
+      return { success: true, message: "Messges send SuccessFully" };
+    } else {
+      return { success: false, message: "Error in sending Email" };
+    }
   } catch (error) {
     console.log(`some thing went wrong in SendVerficationEmail`, error);
 
-    return { seucces: false, message: "failed to send SendVerficationEmail" };
+    return { success: false, message: "failed to send SendVerficationEmail" };
   }
-}
+} 
