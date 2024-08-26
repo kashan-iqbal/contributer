@@ -27,7 +27,7 @@ import { Loader2 } from "lucide-react";
 
 const page = () => {
   const [userName, setUserName] = useState("");
-  const [isUserMessages, setIsUserMessages] = useState("");
+  const [isUserMessages, setIsUserMessages] = useState<ApiResponce>();
   const [isCheckingUser, setIsCheckingUser] = useState("");
   const [formSubmitting, setFormSubmitting] = useState("");
   const [loading, setLoading] = useState(false);
@@ -50,18 +50,19 @@ const page = () => {
     const checkingUserNameUnique = async () => {
       if (userName) {
         setLoading(true);
-        setIsUserMessages("");
+        // setIsUserMessages({
+        //   message: "",
+        //   success:true
+        // });
         try {
           const responce = await axios.get(
             `/api/checking-username-unique?username=${userName}`
           );
 
-          setIsUserMessages(responce.data.message);
+          setIsUserMessages(responce.data);
         } catch (error) {
           const axiosError = error as AxiosError<ApiResponce>;
-          setIsUserMessages(
-            axiosError.response?.data.message ?? "Error in checking User"
-          );
+          // setIsUserMessages(axiosError.response?.data);
         } finally {
           setLoading(false);
         }
@@ -72,8 +73,10 @@ const page = () => {
 
   // submit user Data
   const onSubmit = async (data: z.infer<typeof singUpSchema>) => {
+    console.log(data);
     try {
       const responce = await axios.post<ApiResponce>("/api/sign-up", data);
+      console.log(responce);
       toast({
         title: "success",
         description: responce.data?.message,
@@ -82,9 +85,7 @@ const page = () => {
       setLoading(false);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponce>;
-      setIsUserMessages(
-        axiosError.response?.data.message ?? "Error in Submitting The form"
-      );
+      setIsUserMessages(axiosError.response?.data);
       let errorMsg = axiosError.response?.data.message;
       toast({
         title: "Sign-up faild",
@@ -118,8 +119,14 @@ const page = () => {
                         }}
                       />
                     </FormControl>
-                    <FormDescription>
-                      This is your public display name.
+                    <FormDescription
+                      // className={
+                      //   isUserMessages?.success
+                      //     ? "bg-blend-color-burn"
+                      //     : "bg-blend-normal"
+                      // }
+                    >
+                      {isUserMessages?.message}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -130,7 +137,7 @@ const page = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input placeholder="Email" {...field} />
                     </FormControl>
@@ -157,7 +164,11 @@ const page = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" aria-disabled={loading}>
+              <Button
+                type="submit"
+                className="outline-0.4px"
+                aria-disabled={loading}
+              >
                 {loading ? (
                   <>
                     <Loader2 className="m-2 h-4 w-4 animate-spin" /> please Wait

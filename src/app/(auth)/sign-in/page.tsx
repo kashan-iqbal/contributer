@@ -21,7 +21,7 @@ const page = () => {
   const router = useRouter()
   
 
-  return <div>page</div>;
+  return <div >page <h1 >Sing in  I Am</h1></div>;
 };
 
 export default page;
