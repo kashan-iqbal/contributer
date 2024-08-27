@@ -50,10 +50,10 @@ const page = () => {
     const checkingUserNameUnique = async () => {
       if (userName) {
         setLoading(true);
-        // setIsUserMessages({
-        //   message: "",
-        //   success:true
-        // });
+        setIsUserMessages({
+          message: "",
+          success: true,
+        });
         try {
           const responce = await axios.get(
             `/api/checking-username-unique?username=${userName}`
@@ -61,8 +61,9 @@ const page = () => {
 
           setIsUserMessages(responce.data);
         } catch (error) {
-          const axiosError = error as AxiosError<ApiResponce>;
-          // setIsUserMessages(axiosError.response?.data);
+          // console.log(error , `i am front end error`)
+          const { response } = error as AxiosError<ApiResponce>;
+          setIsUserMessages(response?.data);
         } finally {
           setLoading(false);
         }
@@ -99,7 +100,9 @@ const page = () => {
   return (
     <div className="flex justify-center  items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md  p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className="text-center"></div>
+        <div className="text-center">
+          <h1>Sign-Up</h1>
+        </div>
         <div>
           <Form {...form}>
             <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -120,11 +123,11 @@ const page = () => {
                       />
                     </FormControl>
                     <FormDescription
-                      // className={
-                      //   isUserMessages?.success
-                      //     ? "bg-blend-color-burn"
-                      //     : "bg-blend-normal"
-                      // }
+                      className={
+                        isUserMessages?.success
+                          ? "text-black-50"
+                          : "text-pink-600"
+                      }
                     >
                       {isUserMessages?.message}
                     </FormDescription>
@@ -153,9 +156,9 @@ const page = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="password" {...field} />
+                      <Input placeholder="Password" {...field} />
                     </FormControl>
                     <FormDescription>
                       This is your public display name.
@@ -164,9 +167,9 @@ const page = () => {
                   </FormItem>
                 )}
               />
-              <Button
-                type="submit"
-                className="outline-0.4px"
+              <button
+               type="submit"
+                className="outline outline-1 p-3 cursor-pointer"
                 aria-disabled={loading}
               >
                 {loading ? (
@@ -176,7 +179,7 @@ const page = () => {
                 ) : (
                   "Sign Up"
                 )}
-              </Button>
+              </button>
             </form>
           </Form>
           <div className="text-center mt-4">
