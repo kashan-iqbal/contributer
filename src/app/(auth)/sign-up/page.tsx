@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@react-email/components";
 import { Loader2 } from "lucide-react";
+import { constants } from "buffer";
 
 const page = () => {
   const [userName, setUserName] = useState("");
@@ -96,6 +97,10 @@ const page = () => {
       setLoading(false);
     }
   };
+  // Dom Declareation
+  const userNameChecking = loading
+    ? "Checking userName avaible"
+    : isUserMessages?.message;
 
   return (
     <div className="flex justify-center  items-center min-h-screen bg-gray-100">
@@ -129,7 +134,7 @@ const page = () => {
                           : "text-pink-600"
                       }
                     >
-                      {isUserMessages?.message}
+                      {userNameChecking}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -144,9 +149,6 @@ const page = () => {
                     <FormControl>
                       <Input placeholder="Email" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -160,17 +162,15 @@ const page = () => {
                     <FormControl>
                       <Input placeholder="Password" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <button
-               type="submit"
+                type="submit"
                 className="outline outline-1 p-3 cursor-pointer"
                 aria-disabled={loading}
+                disabled={loading}
               >
                 {loading ? (
                   <>

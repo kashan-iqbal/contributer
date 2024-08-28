@@ -1,4 +1,5 @@
 import dbConnect from "@/lib/connetDb";
+import { nodeMailerFunction } from "@/lib/nodemailer";
 import { SendVerficationEmail } from "@/lib/resend";
 import { UserModel } from "@/model/user";
 import { hash, compare } from "bcrypt-ts";
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
 
     const userExistingByEmail = await UserModel.findOne({ email });
 
-    const verifyCode = Math.floor(10000 + Math.random() * 90000).toString();
+    const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
     if (userExistingByEmail) {
       if (userExistingByEmail.isVerified) {
         return Response.json(
@@ -74,7 +75,7 @@ export async function POST(request: Request) {
       });
       await savedUser.save();
     }
-    const emailResponce = await SendVerficationEmail(
+    const emailResponce = await nodeMailerFunction(
       email,
       username,
       verifyCode

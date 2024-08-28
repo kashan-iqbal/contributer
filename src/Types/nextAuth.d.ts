@@ -36,7 +36,13 @@ declare module "bcrypt-ts" {
 
 }
 
-
+// src/types/ai.d.ts or just ai.d.ts in the root
+declare module 'ai' {
+    // Add module declarations here, or use any if you’re unsure
+    export function OpenAIStream(): any;
+    export function StreamingTextResponse(): any;
+  }
+  
 
 
 

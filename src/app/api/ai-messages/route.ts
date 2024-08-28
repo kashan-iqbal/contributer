@@ -10,7 +10,7 @@ const openai = new OpenAIApi(config);
 // IMPORTANT! Set the runtime to edge
 export const runtime = "edge";
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
     try {
         // Extract the `messages` from the body of the request
         // const messages = await req.json();

@@ -53,7 +53,7 @@ export async function POST(request: Request) {
                     message: "incorrect code",
                 },
                 {
-                    status: 201,
+                    status: 400,
                 }
             );
         }
