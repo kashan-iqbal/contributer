@@ -27,16 +27,16 @@ import axios from "axios";
 import { ApiResponce } from "@/Types/apiResponceType";
 
 type messageCardPorps = {
-  messages: string;
+  message: any;
   onMessagesDelete: (messageId: string) => void;
 };
 
-export function CardWithForm({ messages, onMessagesDelete }: messageCardPorps) {
+export function CardWithForm({ message, onMessagesDelete }: messageCardPorps) {
   const { toast } = useToast();
 
   const handleDeleteMessages = async () => {
     const responce = await axios.delete<ApiResponce>(
-      `api/delete-message/${messages}`
+      `api/delete-message/${message}`
     );
     toast({
       title: responce.data.message,
