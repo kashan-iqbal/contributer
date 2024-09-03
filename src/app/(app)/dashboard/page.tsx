@@ -23,7 +23,7 @@ type apiResponce = {
   messages: message[];
 };
 
-const page = () => {
+const Page = () => {
   const [messages, setMessage] = useState<message[]>([]);
   const [loading, setLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
@@ -117,11 +117,18 @@ const page = () => {
   //   return <div>Please login</div>;
   // }
 
-  const profileUrl="ksahaniqbal"
+  const baseUrl = `${window?.location.protocol}//${window?.location.host}`;
 
-  const copyToClipboard = ()=>{
+  const profileUrl = `${baseUrl}/u/${`imran`}`;
 
-  }
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(profileUrl);
+    toast({
+      title: "url copied",
+      description: "url copied succesfully",
+    });
+    console.log(`first`);
+  };
   return (
     <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
       <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
@@ -135,7 +142,18 @@ const page = () => {
             disabled
             className="input input-bordered w-full p-2 mr-2"
           />
-          <Button onClick={copyToClipboard}>Copy</Button>
+          <Button
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              padding: "10px",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+            onClick={copyToClipboard}
+          >
+            Copy
+          </Button>
         </div>
       </div>
 
@@ -150,11 +168,11 @@ const page = () => {
           Accept Messages: {acceptMessages ? "On" : "Off"}
         </span>
       </div>
-      <Separator/>
+      <Separator />
 
       <Button
         className="mt-4"
-        // variant="outline" typeScript Issue 
+        // variant="outline" typeScript Issue
         onClick={(e) => {
           e.preventDefault();
           getAllMessages(true);
@@ -183,4 +201,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

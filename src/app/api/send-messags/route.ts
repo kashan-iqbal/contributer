@@ -5,11 +5,13 @@ import { Messages, UserModel } from "@/model/user";
 
 
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
     await dbConnect()
 
     try {
         const { username, content } = await request.json()
+        console.log("🚀 ~ GET ~ content:", content)
+        console.log("🚀 ~ GET ~ username:", username)
 
         const user = await UserModel.findOne(username)
 
