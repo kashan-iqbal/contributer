@@ -115,6 +115,13 @@ const Page = () => {
               >
                 sigin
               </Button>
+              <Button
+                onClick={() => {
+                  signIn("github");
+                }}
+              >
+                git hub
+              </Button>
             </form>
           </Form>
           <div className="text-center mt-4">
