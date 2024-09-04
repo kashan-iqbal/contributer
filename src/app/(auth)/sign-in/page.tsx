@@ -6,7 +6,7 @@ import * as z from "zod";
 import Link from "next/link";
 import { useDebounceValue, useDebounceCallback } from "usehooks-ts";
 import { useToast } from "@/components/ui/use-toast";
-import React, { useEffect, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { singUpSchema } from "@/Schemas/signUpSchema";
 import { signInSchema } from "@/Schemas/signInSchema";
@@ -25,19 +25,29 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@react-email/components";
 import { Loader2 } from "lucide-react";
 import { constants } from "buffer";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
-const page = () => {
+const Page = () => {
   const [userName, setUserName] = useState("");
   const [isUserMessages, setIsUserMessages] = useState<ApiResponce>();
   const [isCheckingUser, setIsCheckingUser] = useState("");
   const [formSubmitting, setFormSubmitting] = useState("");
   const [loading, setLoading] = useState(false);
+  const [ssrLoading, setSsrLoading] = useState(false);
 
   const deBounceValue = useDebounceCallback(setUserName, 400);
 
   const { toast } = useToast();
   const router = useRouter();
+
+  const { data, status, update } = useSession();
+
+  const func = async () => {
+    const updated = await update();
+    console.log("🚀 ~ func ~ updated:", updated);
+
+    console.log(data, status);
+  };
 
   const form = useForm({
     resolver: zodResolver(signInSchema),
@@ -49,12 +59,20 @@ const page = () => {
 
   // submit user Data
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    const result = await signIn("credentials", {
+    func();
+    const result = await signIn("github", {
       identifier: data.identifier,
       password: data.password,
     });
     console.log(result);
   };
+
+  useEffect(() => {
+    setSsrLoading(true);
+  }, []);
+  if (!ssrLoading) {
+    return <h1>loading...</h1>;
+  }
   return (
     <div className="flex justify-center  items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md  p-8 space-y-8 bg-white rounded-lg shadow-md">
@@ -95,7 +113,7 @@ const page = () => {
                 className="outline outline-1 p-3 cursor-pointer"
                 aria-disabled={loading}
               >
-            sigin
+                sigin
               </Button>
             </form>
           </Form>
@@ -116,4 +134,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
