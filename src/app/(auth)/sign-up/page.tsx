@@ -26,7 +26,7 @@ import { Button } from "@react-email/components";
 import { Loader2 } from "lucide-react";
 import { constants } from "buffer";
 
-const page = () => {
+const Page = () => {
   const [userName, setUserName] = useState("");
   const [isUserMessages, setIsUserMessages] = useState<ApiResponce>();
   const [isCheckingUser, setIsCheckingUser] = useState("");
@@ -199,4 +199,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
