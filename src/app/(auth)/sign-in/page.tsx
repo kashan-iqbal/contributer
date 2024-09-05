@@ -40,14 +40,10 @@ const Page = () => {
   const { toast } = useToast();
   const router = useRouter();
 
-  const { data, status, update } = useSession();
+  const { data:session } = useSession();
 
-  const func = async () => {
-    const updated = await update();
-    console.log("🚀 ~ func ~ updated:", updated);
+  console.log(session,`i am session`)
 
-    console.log(data, status);
-  };
 
   const form = useForm({
     resolver: zodResolver(signInSchema),
@@ -59,7 +55,6 @@ const Page = () => {
 
   // submit user Data
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    func();
     const result = await signIn("github", {
       identifier: data.identifier,
       password: data.password,
