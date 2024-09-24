@@ -56,7 +56,8 @@ app.use('/api', users);
 // app.get('*', function (req, res) {
 //     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 // });
+const port = process.env.PORT || 8000;
 
-const port = process.env.PORT || 8888;
-
-app.listen(port, '0.0.0.0',() => console.log(`Server up and running on port ${port} !`));
+app.listen(3001, () => {
+  console.log(`Server up and running on port ${3001}!`);
+});
