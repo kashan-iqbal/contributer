@@ -23,7 +23,7 @@ console.log(data)
     );
 };
 
-makeCommit(50); // Number of commits can be adjusted
+makeCommit(1); // Number of commits can be adjusted
 
 
 
