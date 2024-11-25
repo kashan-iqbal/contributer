@@ -9,6 +9,7 @@ const validateUpdateUserInput = require("../../validation/updateUser");
 const User = require("../../models/Users");
 const Loans = require("../../models/Loans");
 const TijarahLoans = require("../../models/TijarahLoans");
+const tijarahPercent = require("../../models/model.bankRate");
 
 // import mogoClient from mongoose;
 const mogoClient = require("mongoose");
@@ -182,7 +183,7 @@ router.post("/for-get-password", async (req, res) => {
       },
       to: email,
       subject: "Reset Your Password",
-      text: `http://localhost:3000/updatePassword/${user._id}/${token}`,
+      text: `https://fintech-tijarah.netlify.app/updatePassword/${user._id}/${token}`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -190,7 +191,7 @@ router.post("/for-get-password", async (req, res) => {
         console.log(error);
       } else {
         return res.status(200).json({
-          success:true,
+          success: true,
           msg: "Email send Check Mail box",
         });
       }
@@ -226,7 +227,9 @@ router.post("/reset-password/:id/:token", async (req, res) => {
     user.password = hash;
     await user.save();
 
-    res.status(200).json({  success:true ,msg: "Password updated successfully" });
+    res
+      .status(200)
+      .json({ success: true, msg: "Password updated successfully" });
   } catch (error) {
     console.error("Error during password reset:", error.message);
 
@@ -255,6 +258,60 @@ router.post("/myloans", (req, res) => {
     });
   } catch (err) {
     console.log(err);
+  }
+});
+
+// Route to handle updates
+router.post("/tijarah-percent", async (req, res) => {
+  const { bankPersent } = req.body;
+  console.log(bankPersent, `i am bankend`);
+  try {
+    // Check if a document exists; if not, create one; otherwise, update it.
+    const updatedDocument = await tijarahPercent.findOneAndUpdate(
+      {}, // Empty filter ensures we're targeting the single document
+      { bankPersent }, // Fields to update
+      { new: true, upsert: true } // Create if it doesn't exist
+    );
+
+    // Respond with the updated document
+    res.status(200).json({
+      success: true,
+      message: "Tijarah percent updated successfully.",
+      data: updatedDocument,
+    });
+  } catch (error) {
+    console.error("Error updating Tijarah percent:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while updating Tijarah percent.",
+    });
+  }
+});
+// Route to send Amount
+router.get("/tijarah-percent", async (req, res) => {
+  try {
+    // Retrieve the single document
+    const tijarahPercentDocument = await tijarahPercent.findOne({});
+
+    if (!tijarahPercentDocument) {
+      return res.status(404).json({
+        success: false,
+        message: "Tijarah percent not found.",
+      });
+    }
+
+    // Respond with the percentage
+    res.status(200).json({
+      success: true,
+      message: "Tijarah percent retrieved successfully.",
+      data: tijarahPercentDocument.bankPersent,
+    });
+  } catch (error) {
+    console.error("Error retrieving Tijarah percent:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while retrieving Tijarah percent.",
+    });
   }
 });
 
